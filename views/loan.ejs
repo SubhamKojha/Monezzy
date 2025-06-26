@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loan Comparison</title>
+</head>
+<body>
+  <h1>Loan Comparison Summary</h1>
+  <table border="1">
+    <tr>
+      <th>Bank</th>
+      <th>Type</th>
+      <th>Amount</th>
+      <th>Tenure</th>
+      <th>EMI</th>
+      <th>Total Repayment</th>
+    </tr>
+    <% banks.forEach(bank => { %>
+      <tr>
+        <td><%= bank.name %></td>
+        <td><%= bank.type %></td>
+        <td><%= bank.amount %></td>
+        <td><%= bank.tenure %></td>
+        <td><%= bank.emi.toFixed(2) %></td>
+        <td><%= bank.total.toFixed(2) %></td>
+      </tr>
+    <% }) %>
+  </table>
+
+  <h2>AI-Generated Analysis</h2>
+  <pre><%= analysis %></pre>
+</body>
+</html>

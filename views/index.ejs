@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Monezzy - Expense Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Monezzy - Expense Tracker</h1>
+
+  <!-- Form: Keep as-is -->
+  <form id="expenseForm" action="/expenses" method="POST">
+    <input type="text" id="title" name="title" placeholder="Title" required />
+    <input type="number" id="amount" name="amount" placeholder="Amount" min="1" required />
+    <input type="date" id="date" name="date" required />
+    <input type="text" id="category" name="category" placeholder="Category" />
+    <label>
+      <input type="checkbox" id="isRecurring" name="isRecurring" />
+      Recurring?
+    </label>
+    <input type="number" id="recurringMonthsInput" name="recurringMonths" placeholder="Months" style="display:none" min="1" />
+    <button type="submit">Add Expense</button>
+  </form>
+
+  <!-- Expenses List -->
+  <h2>Current & Past Expenses</h2>
+  <ul id="expensesList">
+    <% expenses.forEach(exp => { %>
+      <li>
+        <%= exp.title %> - ₹<%= exp.amount %> on <%= new Date(exp.date).toDateString() %> (<%= exp.category %>)
+        <% if (exp.isRecurring) { %><em> (Recurring)</em><% } %>
+        <form method="POST" action="/expenses/delete/<%= exp._id %>" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+
+  <!-- Recurring Rules -->
+  <h2>Recurring Expense Rules</h2>
+  <ul id="recurringList">
+    <% recurringExpenses.forEach(rule => { %>
+      <li>
+        <%= rule.title %> - ₹<%= rule.amount %>/mo starting <%= new Date(rule.startDate).toDateString() %> for <%= rule.duration %> months
+        <form method="POST" action="/expenses/recurring/delete/<%= rule._id %>" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+
+  <!-- Download section (untouched) -->
+  <h3>Download Expenses (Excel)</h3>
+  <input type="date" id="downloadStart" />
+  <input type="date" id="downloadEnd" />
+  <button id="downloadBtn"> Download Excel</button>
+
+  <!-- Charts -->
+  <h3>Daily Expense Chart</h3>
+  <canvas id="expenseChart" width="50" height="50"></canvas>
+
+  <h3>Monthly Expense Chart</h3>
+  <canvas id="monthlyChart" width="100" height="100"></canvas>
+
+  <script src="/js/script.js"></script>
+  <script>
+  window.dailyChartData = <%- JSON.stringify(dailyChartData) %>;
+  window.monthlyChartData = <%- JSON.stringify(monthlyChartData) %>;
+  </script>
+
+</body>
+</html>

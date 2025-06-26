@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Loans</title>
+  <script>
+    let bankCount = 2;
+    function addBank() {
+      if (bankCount >= 4) return;
+      const container = document.getElementById('banks');
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <h3>Bank ${bankCount + 1}</h3>
+        <input name="banks[${bankCount}][name]" placeholder="Bank Name" required />
+        <input name="banks[${bankCount}][type]" placeholder="Loan Type" required />
+        <input name="banks[${bankCount}][tenure]" placeholder="Tenure in months" required type="number" />
+        <input name="banks[${bankCount}][amount]" placeholder="Loan Amount" required type="number" />
+        <hr />
+      `;
+      container.appendChild(div);
+      bankCount++;
+    }
+  </script>
+</head>
+<body>
+  <h1>Loan Comparison Form</h1>
+  <form action="/compare-loans" method="POST">
+    <div id="banks">
+      <div>
+        <h3>Bank 1</h3>
+        <input name="banks[0][name]" placeholder="Bank Name" required />
+        <input name="banks[0][type]" placeholder="Loan Type" required />
+        <input name="banks[0][tenure]" placeholder="Tenure in months" required type="number" />
+        <input name="banks[0][amount]" placeholder="Loan Amount" required type="number" />
+        <hr />
+      </div>
+      <div>
+        <h3>Bank 2</h3>
+        <input name="banks[1][name]" placeholder="Bank Name" required />
+        <input name="banks[1][type]" placeholder="Loan Type" required />
+        <input name="banks[1][tenure]" placeholder="Tenure in months" required type="number" />
+        <input name="banks[1][amount]" placeholder="Loan Amount" required type="number" />
+        <hr />
+      </div>
+    </div>
+    <button type="button" onclick="addBank()">Add Another Bank (Max 4)</button><br/><br/>
+    <button type="submit">Compare Loans</button>
+  </form>
+</body>
+</html>

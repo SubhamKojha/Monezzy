@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ITR Result</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <% if (typeof form !== 'undefined') { %>
+    <h1>Recommended ITR Form: <%= form %></h1>
+  <% } %>
+ 
+
+<div id="uplo">
+  <h2 style="padding-top: 20px;padding-left: 20px;color: white;">Upload Form 16</h2>
+  <form action="/upload" method="POST" enctype="multipart/form-data" id="upl">
+    <input type="file" name="document" id="docs" accept=".pdf,.png,.jpg,.jpeg" required style="align-items: center; margin-left: 40%;margin-bottom: 30px;" />
+    <button type="submit" id="upload">Upload & Extract</button>
+  </form>
+</div>
+
+  <% if (result) { %>
+    <h2 class="heading" style="padding-top: 20px;padding-left: 20px;color: white;">Tax Regime Comparison</h2>
+
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Old Regime</th>
+      <th>New Regime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Gross Salary</td>
+      <td>₹<%= data.grossSalary %></td>
+      <td>₹<%= data.grossSalary %></td>
+    </tr>
+    <tr>
+      <td>80C Deduction (Investments like PPF, ELSS)</td>
+      <td>₹<%= data.sec80C %></td>
+      <td>❌ Not Applicable</td>
+    </tr>
+    <tr>
+      <td>80D Deduction (Health Insurance Premium)</td>
+      <td>₹<%= data.sec80D %></td>
+      <td>❌ Not Applicable</td>
+    </tr>
+    <tr>
+      <td>HRA Exemption (for rent-paying salaried)</td>
+      <td>₹<%= data.hra %></td>
+      <td>❌ Not Applicable</td>
+    </tr>
+    <tr>
+      <td>Professional Tax</td>
+      <td>₹<%= data.profTax %></td>
+      <td>₹<%= data.profTax %></td>
+    </tr>
+    <tr>
+      <td><strong>Tax Payable</strong></td>
+      <td><strong>₹<%= result.oldTax %></strong></td>
+      <td><strong>₹<%= result.newTax %></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Buttons -->
+<div class="form-buttons">
+  <div class="regime-buttons">
+    <div class="old-regime">
+      <button onclick="showITRForm('old')">Fill ITR-1 (Old Regime)</button>
+    </div>
+    <div class="new-regime">
+      <button onclick="showITRForm('new')">Fill ITR-1 (New Regime)</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="preFormGuidance">
+  <!-- Explanation -->
+  <div class="tax-explanation" id="regimeAdviceBox">
+    <!-- JS Will Fill This Based on Condition -->
+  </div>
+
+  <!-- Help: What Are These? -->
+  <div class="component-explainer" style="color:white;">
+    <h4>What do these deductions mean?</h4>
+   <ul>
+      <li><strong>80C:</strong> Investments in PPF, ELSS, LIC, etc. (Max ₹1.5L)</li>
+      <li><strong>80D:</strong> Medical insurance premiums for self/family</li>
+      <li><strong>HRA:</strong> House Rent Allowance (if you’re salaried and pay rent)</li>
+      <li><strong>Professional Tax:</strong> Mandatory deduction by employer (allowed in both)</li>
+    </ul>
+  </div>
+</div>
+  <% } %>
+
+<% if (data){%>
+  <div class="form-container" id="itrFormContainer" style="display: none;">
+        <!-- Header (shown on all pages) -->
+        <div class="form-header">
+            <div class="form-title">FORM SAHAJ (ITR-1)</div>
+            <div class="form-subtitle">INDIAN INCOME TAX RETURN</div>
+            <div style="font-size: 12px; margin: 10px 0;">
+                [For individuals being a resident (other than not ordinarily resident) having total income up to Rs.50 lakh, having<br>
+                Income from Salaries, one house property, other sources (Interest etc.), and agricultural income up to Rs.5 thousand]<br>
+                [Not for an individual who is either Director in a company or has invested in unlisted equity shares or in cases<br>
+                where TDS has been deducted u/s 194N or if income-tax is deferred on ESOP]<br>
+                (Refer instructions for eligibility)
+            </div>
+            <div class="assessment-year">
+                Assessment Year
+                <input type="text" class="input-box" value="2" readonly>
+                <input type="text" class="input-box" value="0" readonly>
+                <input type="text" class="input-box" value="2" readonly>
+                <input type="text" class="input-box" value="3" readonly>
+                -
+                <input type="text" class="input-box" value="2" readonly>
+                <input type="text" class="input-box" value="4" readonly>
+            </div>
+        </div>
+
+        <form id="itrForm" action="/itr-form" method="post">
+            <!-- Page 1: General Information -->
+            <div class="page active" id="page1">
+                <div class="page-title">PART A - GENERAL INFORMATION</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A1) PAN</label>
+                        <input type="text" class="input-box" name="pan1" maxlength="1">
+                        <input type="text" class="input-box" name="pan2" maxlength="1">
+                        <input type="text" class="input-box" name="pan3" maxlength="1">
+                        <input type="text" class="input-box" name="pan4" maxlength="1">
+                        <input type="text" class="input-box" name="pan5" maxlength="1">
+                        <input type="text" class="input-box" name="pan6" maxlength="1">
+                        <input type="text" class="input-box" name="pan7" maxlength="1">
+                        <input type="text" class="input-box" name="pan8" maxlength="1">
+                        <input type="text" class="input-box" name="pan9" maxlength="1">
+                        <input type="text" class="input-box" name="pan10" maxlength="1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A2) First Name</label>
+                        <input type="text" name="firstName" class="wide-input">
+                    </div>
+                    <div class="form-group">
+                        <label>(A2a) Middle Name</label>
+                        <input type="text" name="middleName" class="medium-input">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A3) Last name</label>
+                        <input type="text" name="lastName" class="wide-input">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A4) Date of Birth</label>
+                        <input type="text" class="input-box" name="dobD1" maxlength="1">
+                        <input type="text" class="input-box" name="dobD2" maxlength="1">
+                        <input type="text" class="input-box" name="dobM1" maxlength="1">
+                        <input type="text" class="input-box" name="dobM2" maxlength="1">
+                        <input type="text" class="input-box" name="dobY1" maxlength="1">
+                        <input type="text" class="input-box" name="dobY2" maxlength="1">
+                        <input type="text" class="input-box" name="dobY3" maxlength="1">
+                        <input type="text" class="input-box" name="dobY4" maxlength="1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A5) Aadhaar Number (12 digits)/Aadhaar Enrolment Id (28 digits)</label>
+                        <input type="text" name="aadhaar" class="wide-input" maxlength="28">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A6) Mobile No.</label>
+                        <input type="tel" name="mobile" class="medium-input">
+                    </div>
+                    <div class="form-group">
+                        <label>(A7) E-mail Address</label>
+                        <input type="email" name="email" class="wide-input">
+                    </div>
+                </div>
+
+                <div class="section-subtitle">Address:</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A8) Flat/Door/Block No.</label>
+                        <input type="text" name="flatNo" class="medium-input">
+                    </div>
+                    <div class="form-group">
+                        <label>(A9) Name of Premises/Building/Village</label>
+                        <input type="text" name="building" class="wide-input">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A10) Road/Street/Post Office</label>
+                        <input type="text" name="street" class="wide-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Area/Locality</label>
+                        <input type="text" name="area" class="wide-input">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A11) Town/City/District</label>
+                        <input type="text" name="city" class="wide-input">
+                    </div>
+                    <div class="form-group">
+                        <label>(A12) State</label>
+                        <input type="text" name="state" class="medium-input">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A13) Country</label>
+                        <input type="text" name="country" class="medium-input">
+                    </div>
+                    <div class="form-group">
+                        <label>(A14) PIN code</label>
+                        <input type="text" name="pincode" class="narrow-input">
+                    </div>
+                </div>
+
+                <div class="section-subtitle">(A15) Filed u/s (Tick)</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="filed139_1" id="filed139_1">
+                        <label for="filed139_1">139(1)-On or before due date</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="filed139_4" id="filed139_4">
+                        <label for="filed139_4">139(4)-Belated</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="filed139_5" id="filed139_5">
+                        <label for="filed139_5">139(5)-Revised</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="filed119_2b" id="filed119_2b">
+                        <label for="filed119_2b">119(2)(b)- After Condonation of delay</label>
+                    </div>
+                </div>
+
+                <div class="section-subtitle">(A16) Or Filed in response to notice u/s</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="notice139_9" id="notice139_9">
+                        <label for="notice139_9">139(9)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="notice142_1" id="notice142_1">
+                        <label for="notice142_1">142(1)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="notice148" id="notice148">
+                        <label for="notice148">148</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="notice153C" id="notice153C">
+                        <label for="notice153C">153C</label>
+                    </div>
+                </div>
+
+                <div class="section-subtitle">(A17) Nature of employment-</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="empCentralGovt" id="empCentralGovt">
+                        <label for="empCentralGovt">Central Govt.</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="empStateGovt" id="empStateGovt">
+                        <label for="empStateGovt">State Govt.</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="empPSU" id="empPSU">
+                        <label for="empPSU">Public Sector Undertaking</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="pensionersCG" id="pensionersCG">
+                        <label for="pensionersCG">Pensioners-CG</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="pensionersSG" id="pensionersSG">
+                        <label for="pensionersSG">Pensioners-SG</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="pensionersPSU" id="pensionersPSU">
+                        <label for="pensionersPSU">Pensioners-PSU</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="pensionersOthers" id="pensionersOthers">
+                        <label for="pensionersOthers">Pensioners-Others</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="empOthers" id="empOthers">
+                        <label for="empOthers">Others</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="empNotApplicable" id="empNotApplicable">
+                        <label for="empNotApplicable">Not Applicable</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A18) If revised/defective, then enter Receipt No. and Date of filing original return</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Receipt No.</label>
+                        <input type="text" name="receiptNo" class="medium-input">
+                    </div>
+                    <div class="form-group">
+                        <label>DD/MM/YYYY</label>
+                        <input type="text" name="filingDate" class="medium-input" placeholder="DD/MM/YYYY">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A19) If filed in response to notice u/s 139(9)/142(1)/148/153C or order u/s</label>
+                        <br>
+                        <label>119(2)(b)- enter Unique Number/Document Identification Number (DIN) & Date of such Notice or Order</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Unique Number/DIN</label>
+                        <input type="text" name="uniqueNumber" class="wide-input">
+                    </div>
+                    <div class="form-group">
+                        <label>DD/MM/YYYY</label>
+                        <input type="text" name="noticeDate" class="medium-input" placeholder="DD/MM/YYYY">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A20) Are you opting for new tax regime u/s 115BAC ?</label>
+                        <input type="radio" name="newTaxRegime" id="newTaxYes" value="yes">
+                        <label for="newTaxYes">Yes</label>
+                        <input type="radio" name="newTaxRegime" id="newTaxNo" value="no">
+                        <label for="newTaxNo">No</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>(A21) Are you filing return of income under Seventh proviso to section 139(1) but otherwise not required to furnish return of income?</label>
+                        <input type="radio" name="seventhProviso" id="seventhProvisoYes" value="yes">
+                        <label for="seventhProvisoYes">Yes</label>
+                        <input type="radio" name="seventhProviso" id="seventhProvisoNo" value="no">
+                        <label for="seventhProvisoNo">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 2: Gross Total Income -->
+            <div class="page" id="page2">
+                <div class="page-title">PART B - GROSS TOTAL INCOME (Whole Rupee only)</div>
+              
+                <div class="section-subtitle">B1 SALARY / PENSION</div>
+              
+                <table class="table">
+                  <tr>
+                    <td>i Gross Salary (ia + ib + ic+id+ie)</td>
+                    <td><input type="number" name="grossSalary" class="amount-input" value="<%= data.grossSalary || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>a Salary as per section 17(1)</td>
+                    <td><input type="number" name="salary17_1" class="amount-input" value="<%= data.salary17_1 || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>b Value of perquisites as per section 17(2)</td>
+                    <td><input type="number" name="perquisites17_2" class="amount-input" value="<%= data.perquisites17_2 || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>c Profit in lieu of salary as per section 17(3)</td>
+                    <td><input type="number" name="profit17_3" class="amount-input" value="<%= data.profit17_3 || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>d Income from retirement benefit account maintained in a notified country u/s 89A</td>
+                    <td><input type="number" name="retirement89A_notified" class="amount-input" value="<%= data.retirement89A_notified || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>e Income from retirement benefit account maintained in a country other than notified country u/s 89A</td>
+                    <td><input type="number" name="retirement89A_other" class="amount-input" value="<%= data.retirement89A_other || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>ii Less allowances to the extent exempt u/s 10</td>
+                    <td><input type="number" name="allowancesExempt" class="amount-input" value="<%= data.allowancesExempt || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>iia Less: Income claimed for relief from taxation u/s 89A</td>
+                    <td><input type="number" name="reliefIncome89A" class="amount-input" value="<%= data.reliefIncome89A || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>iii Net Salary (i – ii-iia)</td>
+                    <td><input type="number" name="netSalary" class="amount-input" value="<%= data.netSalary || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>iv Deductions u/s 16 (iva + ivb + ivc)</td>
+                    <td><input type="number" name="deductions16" class="amount-input" value="<%= data.deductions16 || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>a Standard deduction u/s 16(ia)</td>
+                    <td><input type="number" name="standardDeduction" class="amount-input" value="<%= data.standardDeduction || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>b Entertainment allowance u/s 16(ii)</td>
+                    <td><input type="number" name="entertainmentAllowance" class="amount-input" value="<%= data.entertainmentAllowance || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>c Professional tax u/s 16(iii)</td>
+                    <td><input type="number" name="professionalTax" class="amount-input" value="<%= data.professionalTax || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>v Income chargeable under the head 'Salaries' (iii – iv) B1</strong></td>
+                    <td><input type="number" name="incomeFromSalaries" class="amount-input" value="<%= data.incomeFromSalaries || 0 %>"></td>
+                  </tr>
+                </table>
+              
+                <div class="section-subtitle">B2 HOUSE PROPERTY</div>
+                <div class="checkbox-group">
+                  <div class="checkbox-item">
+                    <input type="checkbox" name="selfOccupied" id="selfOccupied" <%= data.selfOccupied ? 'checked' : '' %>>
+                    <label for="selfOccupied">Self-Occupied</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" name="letOut" id="letOut" <%= data.letOut ? 'checked' : '' %>>
+                    <label for="letOut">Let Out</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" name="deemedLetOut" id="deemedLetOut" <%= data.deemedLetOut ? 'checked' : '' %>>
+                    <label for="deemedLetOut">Deemed Let Out</label>
+                  </div>
+                </div>
+              
+                <table class="table">
+                  <tr>
+                    <td>i Gross rent received/ receivable/ lettable value during the year</td>
+                    <td><input type="number" name="grossRent" class="amount-input" value="<%= data.grossRent || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>ii Tax paid to local authorities</td>
+                    <td><input type="number" name="localTax" class="amount-input" value="<%= data.localTax || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>iii Annual Value (i – ii)</td>
+                    <td><input type="number" name="annualValue" class="amount-input" value="<%= data.annualValue || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>iv 30% of Annual Value</td>
+                    <td><input type="number" name="thirtyPercentAnnual" class="amount-input" value="<%= data.thirtyPercentAnnual || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>v Interest payable on borrowed capital</td>
+                    <td><input type="number" name="interestBorrowed" class="amount-input" value="<%= data.interestBorrowed || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>vi Arrears/Unrealised rent received during the year less 30%</td>
+                    <td><input type="number" name="arrearsRent" class="amount-input" value="<%= data.arrearsRent || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>vii Income chargeable under the head 'House Property' (iii – iv – v) + vi B2</strong></td>
+                    <td><input type="number" name="incomeFromProperty" class="amount-input" value="<%= data.incomeFromProperty || 0 %>"></td>
+                  </tr>
+                </table>
+              
+                <div class="section-subtitle">B3 Income from Other Sources</div>
+              
+                <table class="table">
+                  <tr>
+                    <td>Income from Other Sources</td>
+                    <td><input type="number" name="otherSources" class="amount-input" value="<%= data.otherSources || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>Less: Deduction u/s 57(iia) (in case of family pension only)</td>
+                    <td><input type="number" name="deduction57iia" class="amount-input" value="<%= data.deduction57iia || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td>Less: Income claimed for relief from taxation u/s 89A</td>
+                    <td><input type="number" name="reliefOtherSources" class="amount-input" value="<%= data.reliefOtherSources || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>B3 Net Income from Other Sources</strong></td>
+                    <td><input type="number" name="netOtherSources" class="amount-input" value="<%= data.netOtherSources || 0 %>"></td>
+                  </tr>
+                </table>
+              
+                <table class="table">
+                  <tr>
+                    <td><strong>B4 Gross Total Income (B1+B2+B3)</strong></td>
+                    <td><input type="number" name="grossTotalIncome" class="amount-input" value="<%= data.grossTotalIncome || 0 %>"></td>
+                  </tr>
+                </table>
+              </div>
+              
+
+            <!-- Page 3: Deductions -->
+            <div class="page" id="page3">
+                <div class="page-title">PART C – DEDUCTIONS AND TAXABLE TOTAL INCOME</div>
+              
+                <table class="table">
+                  <tr>
+                    <th>80C</th>
+                    <th>80CCC</th>
+                    <th>80CCD(1)</th>
+                    <th>80CCD(1B)</th>
+                    <th>80CCD(2)</th>
+                    <th>80D</th>
+                    <th>80DD</th>
+                    <th>80DDB</th>
+                    <th>80E</th>
+                    <th>80EE</th>
+                  </tr>
+                  <tr>
+                    <td><input type="number" name="deduction80C" class="amount-input" value="<%=data.sec80C || 0 %>"></td>
+                    <td><input type="number" name="deduction80CCC" class="amount-input" value="<%= data.sec80CCC || 0 %>"></td>
+                    <td><input type="number" name="deduction80CCD1" class="amount-input" value="<%= data.sec80CCD1 || 0 %>"></td>
+                    <td><input type="number" name="deduction80CCD1B" class="amount-input" value="<%= data.sec80CCD1B || 0 %>"></td>
+                    <td><input type="number" name="deduction80CCD2" class="amount-input" value="<%= data.sec80CCD2 || 0 %>"></td>
+                    <td><input type="number" name="deduction80D" class="amount-input" value="<%= data.sec80D || 0 %>"></td>
+                    <td><input type="number" name="deduction80DD" class="amount-input" value="<%= data.sec80DD || 0 %>"></td>
+                    <td><input type="number" name="deduction80DDB" class="amount-input" value="<%= data.sec80DDB || 0 %>"></td>
+                    <td><input type="number" name="deduction80E" class="amount-input" value="<%= data.sec80E || 0 %>"></td>
+                    <td><input type="number" name="deduction80EE" class="amount-input" value="<%= data.sec80EE || 0 %>"></td>
+                  </tr>
+                </table>
+              
+                <table class="table">
+                  <tr>
+                    <th>80EEA</th>
+                    <th>80EEB</th>
+                    <th>80G</th>
+                    <th>80GG</th>
+                    <th>80GGA</th>
+                    <th>80GGC</th>
+                    <th>80TTA</th>
+                    <th>80TTB</th>
+                    <th>80U</th>
+                    <th>Any other deduction</th>
+                  </tr>
+                  <tr>
+                    <td><input type="number" name="deduction80EEA" class="amount-input" value="<%= data.sec80EEA || 0 %>"></td>
+                    <td><input type="number" name="deduction80EEB" class="amount-input" value="<%= data.sec80EEB || 0 %>"></td>
+                    <td><input type="number" name="deduction80G" class="amount-input" value="<%= data.sec80G || 0 %>"></td>
+                    <td><input type="number" name="deduction80GG" class="amount-input" value="<%= data.sec80GG || 0 %>"></td>
+                    <td><input type="number" name="deduction80GGA" class="amount-input" value="<%= data.sec80GGA || 0 %>"></td>
+                    <td><input type="number" name="deduction80GGC" class="amount-input" value="<%= data.sec80GGC || 0 %>"></td>
+                    <td><input type="number" name="deduction80TTA" class="amount-input" value="<%= data.sec80TTA || 0 %>"></td>
+                    <td><input type="number" name="deduction80TTB" class="amount-input" value="<%= data.sec80TTB || 0 %>"></td>
+                    <td><input type="number" name="deduction80U" class="amount-input" value="<%= data.sec80U || 0 %>"></td>
+                    <td><input type="number" name="otherDeduction" class="amount-input" value="<%= data.otherDeduction || 0 %>"></td>
+                  </tr>
+                </table>
+              
+                <table class="table">
+                  <tr>
+                    <td><strong>Total deductions C1</strong></td>
+                    <td><input type="number" name="totalDeductions" class="amount-input" value="<%= data.totalDeductions || 0 %>"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Total Income (B4-C1) C2</strong></td>
+                    <td><input type="number" name="totalIncome" class="amount-input" value="<%= data.totalIncome || 0 %>"></td>
+                  </tr>
+                </table>
+              
+                <div class="section-subtitle">Exempt Income: For reporting purpose</div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <input type="text" name="exemptIncome" class="wide-input" placeholder="Drop down to be provided in e-filing utility mentioning nature of exempt income" value="<%= data.exemptIncome || '' %>">
+                  </div>
+                </div>
+              </div>
+              
+            <!-- Page 4: Tax Computation -->
+            <div class="page" id="page4">
+                <div class="page-title">PART D – COMPUTATION OF TAX PAYABLE</div>
+                
+                <table class="table">
+                    <tr>
+                        <td>D1 Tax payable on total income</td>
+                        <td><input type="number" name="taxPayable" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D2 Rebate u/s 87A</td>
+                        <td><input type="number" name="rebate87A" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D3 Tax after Rebate</td>
+                        <td><input type="number" name="taxAfterRebate" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D4 Health and education Cess @ 4% on D3</td>
+                        <td><input type="number" name="healthEducationCess" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D5 Total Tax and Cess</td>
+                        <td><input type="number" name="totalTaxCess" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D6 Relief u/s 89</td>
+                        <td><input type="number" name="relief89" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D7 Interest u/s 234A</td>
+                        <td><input type="number" name="interest234A" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D8 Interest u/s 234B</td>
+                        <td><input type="number" name="interest234B" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D9 Interest u/s 234C</td>
+                        <td><input type="number" name="interest234C" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D10 Fee u/s 234F</td>
+                        <td><input type="number" name="fee234F" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>D11 Total Tax, Fee and Interest (D5+D7+D8+D9+D10 – D6)</strong></td>
+                        <td><input type="number" name="totalTaxFeeInterest" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D12 Total Taxes Paid</td>
+                        <td><input type="number" name="totalTaxesPaid" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D13 Amount payable (D11-D12) (if D11>D12)</td>
+                        <td><input type="number" name="amountPayable" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td>D14 Refund (D12-D11) (if D12>D11)</td>
+                        <td><input type="number" name="refund" class="amount-input"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Page 5: Other Information -->
+            <div class="page" id="page5">
+                <div class="page-title">PART E – OTHER INFORMATION</div>
+                
+                <div class="section-subtitle">Details of all Bank Accounts held in India at any time during the previous year (excluding dormant accounts)</div>
+
+                <table class="table">
+                    <tr>
+                        <th>Sl.</th>
+                        <th>IFS Code of the Bank</th>
+                        <th>Name of the Bank</th>
+                        <th>Account Number</th>
+                        <th>Select Account for Refund Credit</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td><input type="text" name="ifsCode1" class="medium-input"></td>
+                        <td><input type="text" name="bankName1" class="wide-input"></td>
+                        <td><input type="text" name="accountNumber1" class="wide-input"></td>
+                        <td><input type="checkbox" name="refundAccount1"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><input type="text" name="ifsCode2" class="medium-input"></td>
+                        <td><input type="text" name="bankName2" class="wide-input"></td>
+                        <td><input type="text" name="accountNumber2" class="wide-input"></td>
+                        <td><input type="checkbox" name="refundAccount2"></td>
+                    </tr>
+                </table>
+
+                <div class="section-subtitle">Schedule-IT Details of Advance Tax and Self-Assessment Tax payments</div>
+
+                <table class="table">
+                    <tr>
+                        <th>BSR Code</th>
+                        <th>Date of Deposit (DD/MM/YYYY)</th>
+                        <th>Serial Number of Challan</th>
+                        <th>Tax paid</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="bsrCode1" class="medium-input"></td>
+                        <td><input type="text" name="depositDate1" class="medium-input"></td>
+                        <td><input type="text" name="challanSerial1" class="medium-input"></td>
+                        <td><input type="number" name="taxPaid1" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="bsrCode2" class="medium-input"></td>
+                        <td><input type="text" name="depositDate2" class="medium-input"></td>
+                        <td><input type="text" name="challanSerial2" class="medium-input"></td>
+                        <td><input type="number" name="taxPaid2" class="amount-input"></td>
+                    </tr>
+                </table>
+
+                <div class="section-subtitle">Schedule-TDS Details of TDS/TCS [As per Form 16/16A/16C/27D issued by the Deductor(s)/ Employer(s)/ Payer(s)/ Collector(s)]</div>
+
+                <table class="table">
+                    <tr>
+                        <th>TAN of deductor/Collector or PAN/ Aadhaar No. of the Tenant</th>
+                        <th>Name of the Deductor/ Collector/Tenant</th>
+                        <th>Gross payment/ receipt which is subject to tax deduction /collection</th>
+                        <th>Year of tax deduction/ collection</th>
+                        <th>Tax Deducted/ collected</th>
+                        <th>TDS/TCS credit out of (5) claimed this Year</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="tanDeductor1" class="medium-input"></td>
+                        <td><input type="text" name="deductorName1" class="wide-input"></td>
+                        <td><input type="number" name="grossPayment1" class="amount-input"></td>
+                        <td><input type="text" name="deductionYear1" class="narrow-input"></td>
+                        <td><input type="number" name="taxDeducted1" class="amount-input"></td>
+                        <td><input type="number" name="tdsCredit1" class="amount-input"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="tanDeductor2" class="medium-input"></td>
+                        <td><input type="text" name="deductorName2" class="wide-input"></td>
+                        <td><input type="number" name="grossPayment2" class="amount-input"></td>
+                        <td><input type="text" name="deductionYear2" class="narrow-input"></td>
+                        <td><input type="number" name="taxDeducted2" class="amount-input"></td>
+                        <td><input type="number" name="tdsCredit2" class="amount-input"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Page 6: Verification -->
+            <div class="page" id="page6">
+                <div class="page-title">VERIFICATION</div>
+                
+                <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+                    <div style="border: 1px solid #000; width: 150px; height: 80px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 10px; padding: 5px;">
+                        Stamp Receipt No., Seal,<br>
+                        Date & Sign of Receiving<br>
+                        Official
+                    </div>
+
+                    <div style="flex: 1;">
+                        <p style="margin-bottom: 15px;">I, <input type="text" name="declarantName" class="wide-input"> son/ daughter of <input type="text" name="fatherName" class="wide-input"> solemnly declare that to the best of my knowledge and belief, the information given in the return is correct and complete and is in accordance with the provisions of the Income-tax Act, 1961.</p>
+                        
+                        <p>I further declare that I am making this return in my capacity as <input type="text" name="capacity" class="medium-input"> and I am also competent to make this return and verify it. I am holding permanent account number <input type="text" name="panVerification" class="medium-input">.</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin: 30px 0;">
+                    <div>
+                        <label>Date:</label>
+                        <input type="text" name="verificationDate" class="medium-input">
+                    </div>
+                    <div>
+                        <label>Signature:</label>
+                        <input type="text" name="signature" class="wide-input">
+                    </div>
+                </div>
+
+                <div class="section-subtitle">If the return has been prepared by a Tax Return Preparer (TRP) give further details below:</div>
+
+                <table class="table">
+                    <tr>
+                        <th>Identification No. of TRP</th>
+                        <th>Name of TRP</th>
+                        <th>Counter Signature of TRP</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="trpId" class="medium-input"></td>
+                        <td><input type="text" name="trpName" class="wide-input"></td>
+                        <td><input type="text" name="trpSignature" class="wide-input"></td>
+                    </tr>
+                </table>
+
+                <div style="margin-top: 20px;">
+                    If TRP is entitled for any reimbursement from the Government, amount thereof: <input type="number" name="trpReimbursement" class="amount-input">
+                </div>
+
+                <div style="margin-top: 40px; text-align: center;">
+                    <button type="button" class="btn" onclick="showPreview()">Show Complete Preview</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.print()">Print Form</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button type="button" class="btn" id="prevBtn" onclick="changeStep(-1)">Previous</button>
+            
+            <div class="page-indicator">
+                <div class="page-info">
+                    <span id="currentStep">1</span> of 6
+                </div>
+                <div style="display: flex; gap: 5px; margin: 0 15px;">
+                    <div class="page-dot active" onclick="showStep(1)"></div>
+                    <div class="page-dot" onclick="showStep(2)"></div>
+                    <div class="page-dot" onclick="showStep(3)"></div>
+                    <div class="page-dot" onclick="showStep(4)"></div>
+                    <div class="page-dot" onclick="showStep(5)"></div>
+                    <div class="page-dot" onclick="showStep(6)"></div>
+                </div>
+            </div>
+            
+            <button type="button" class="btn" id="nextBtn" onclick="changeStep(1)">Next</button>
+        </div>
+
+        <!-- Preview Section -->
+        <div id="previewSection" class="preview-section">
+            <div class="preview-title">Complete Form Preview</div>
+            <div id="previewContent"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="hidePreview()">Hide Preview</button>
+            </div>
+        </div>
+<% } %>
+
+  <% if (result) { %>
+
+  <script>
+    window.onload = function () {
+      let oldTaxStr = '<%= result.oldTax || 0 %>';
+      let newTaxStr = '<%= result.newTax || 0 %>';
+
+      const oldTax = parseFloat(oldTaxStr.replace(/,/g, '')) || 0;
+      const newTax = parseFloat(newTaxStr.replace(/,/g, '')) || 0;
+
+      const adviceBox = document.getElementById("regimeAdviceBox");
+
+      if (Math.abs(oldTax - newTax) < 1) {
+        adviceBox.innerHTML = `
+          <div class="better-regime neutral">
+            <h3>🤝 Both Regimes Yield the Same Tax</h3>
+            <p>Looks like your tax liability is identical in both regimes. Choose the one that feels easier to file or maintain in future.</p>
+          </div>
+        `;
+      } else if (oldTax < newTax) {
+        adviceBox.innerHTML = `
+          <div class="better-regime old" style="color:white;">
+            <h3>✔️ Old Regime is Better for You</h3>
+            <p>You’re saving more tax under the old regime, thanks to your smart investments and deductions. Keep it up!</p>
+            <p><strong>Tip:</strong> If you regularly invest in tax-saving instruments and pay rent, the old regime usually works best.</p>
+          </div>
+        `;
+      } else {
+        adviceBox.innerHTML = `
+          <div class="better-regime new" style="color:white;">
+            <h3>✔️ New Regime is Better for You</h3>
+            <p >You’ll pay less tax under the simplified new regime. Ideal if you don’t want to deal with paperwork or deductions.</p>
+            <p><strong>Tip:</strong> If you don’t claim many deductions or just want simplicity, new regime is the way to go.</p>
+          </div>
+        `;
+      }
+    };
+  </script>
+<% } %>
+<script src="/javascript/itr.js"></script>
+</body>
+</html>

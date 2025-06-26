@@ -1,0 +1,130 @@
+/* Sidebar Styles - Reusable Component */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: -280px;
+  width: 280px;
+  height: calc(100vh - 60px);
+  background: #1a1a1a;
+  border-right: 1px solid #2a2a2a;
+  transition: all 0.3s ease;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 60px);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.sidebar-header h3 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sidebar-nav {
+  padding: 20px 0;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #9ca3af;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+  background: #2a2a2a;
+  color: #ffffff;
+  border-left-color: #6366f1;
+}
+
+.nav-link.active {
+  background: #2a2a2a;
+  color: #6366f1;
+  border-left-color: #6366f1;
+}
+
+.nav-icon {
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
+}
+
+.nav-text {
+  font-weight: 500;
+}
+
+/* Sidebar Scrollbar */
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 2px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
+/* Desktop Responsive */
+@media (min-width: 1200px) {
+  .sidebar {
+    left: 0;
+    position: fixed;
+  }
+  
+  .sidebar-overlay {
+    display: none;
+  }
+  
+  .main-content {
+    margin-left: 280px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+}

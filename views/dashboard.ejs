@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monezzy - Financial Dashboard</title>
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        
+            <nav class="nav-menu">
+                <a href="#" class="nav-item openclose">
+                    <div class="toggle-icon" id="toggleIcon">
+                        <i class="fa fa-angle-double-right" id="toggleArrow"></i>
+                    </div>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="label">Dashboard</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="#" class="nav-item" data-page="expenses">
+                    <i class="fas fa-receipt"></i>
+                    <span class="label">Expenses</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="#" class="nav-item" data-page="savings">
+                    <i class="fas fa-piggy-bank"></i>
+                    <span class="label">Savings</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="#" class="nav-item" data-page="history">
+                    <i class="fa-regular fa-credit-card"></i>
+                    <span class="label">Income</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="#" class="nav-item" data-page="taxes">
+                    <i class="fas fa-file-invoice"></i>
+                    <span class="label">ITR Filing</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="#" class="nav-item" data-page="favorites">
+                    <i class="fa-solid fa-file"></i>
+                    <span class="label">Loan Comparison</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="#" class="nav-item" data-page="profile">
+                    <i class="fas fa-user"></i>
+                    <span class="label">Profile</span>
+                    <div class="nav-indicator"></div>
+                </a>
+                <a href="#" class="nav-item" data-page="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="label">Logout</span>
+                    <div class="nav-indicator"></div>
+                </a>
+            </nav>
+    </aside>
+
+    <div class="main">
+        <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="logo">
+                        <div class="logo-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <span class="logo-text">Monezzy</span>
+                </div>
+                </div>
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notification-btn" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge pulse">3</span>
+                    </button>
+                </div>
+            </header>
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <section class="welcome-section">
+            <div class="welcome-content">
+            <h1>Welcome User<span class="wave"></span></h1>
+            <p>Here's your financial overview for today</p>
+            </div>
+            </section>
+
+            <section class="finance-overview">
+            <div class="section-header">
+            <h2>Today's Finance</h2>
+            </div>
+
+            <div class="finance-cards">
+            <div class="finance-card income-card">
+                <div class="card-icon"><i class="fas fa-arrow-up"></i></div>
+                <div class="card-content">
+                <div class="card-amount">₹<span id="totalIncome"><%= totalIncome.toFixed(2) %></span></div>
+                <div class="card-label">Total Income</div>
+                <div class="card-change positive"><i class="fas fa-arrow-up"></i></div>
+                </div>
+                <div class="card-chart"><canvas id="incomeChart"></canvas></div>
+            </div>
+
+            <div class="finance-card expense-card">
+                <div class="card-icon"><i class="fas fa-arrow-down"></i></div>
+                <div class="card-content">
+                <div class="card-amount">₹<span id="totalExpense"><%= totalExpense.toFixed(2) %></span></div>
+                <div class="card-label">Total Expenses</div>
+                <div class="card-change negative"><i class="fas fa-arrow-up"></i></div>
+                </div>
+                <div class="card-chart"><canvas id="expenseChart"></canvas></div>
+            </div>
+
+            <div class="finance-card savings-card">
+                <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
+                <div class="card-content">
+                <div class="card-amount">₹<span id="totalSavings"><%= totalSavings.toFixed(2) %></span></div>
+                <div class="card-label">Net Savings</div>
+                <div class="card-change positive"><i class="fas fa-arrow-up"></i></div>
+                </div>
+                <div class="card-chart"><canvas id="savingsChart"></canvas></div>
+            </div>
+            </div>
+            </section>
+
+            <section class="charts-section">
+                <div class="chart-container">
+                <div class="chart-header"><h3>Monthly Trends</h3></div>
+                <div class="chart-content"><canvas id="combinedChart"></canvas></div>
+                </div>
+
+                <div class="expense-breakdown">
+                <div class="breakdown-header"><h3>Expense Breakdown</h3></div>
+                <div class="breakdown-content"><canvas id="financialPie"></canvas></div>
+                </div>
+            </section>
+
+            <section class="additional-info">
+                <div class="info-card">
+                    <h3>Top Expenses</h3>
+                    <div class="filter-container">
+                        <label for="topExpenseRange">Select Duration:</label>
+                        <select id="topExpenseRange">
+                        <option value="1" <%= range == 1 ? 'selected' : '' %>>Last Month</option>
+                        <option value="6" <%= range == 6 ? 'selected' : '' %>>Last 6 Months</option>
+                        <option value="12" <%= range == 12 ? 'selected' : '' %>>Last 1 Year</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="top-expenses-table">
+                        <thead>
+                            <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topExpensesTableBody">
+                            <% topExpenses.forEach((e, i) => { %>
+                          <tr>
+                            <td><%= String(i + 1).padStart(2, '0') %></td>
+                            <td><%= e.title %></td>
+                            <td><%= new Date(e.date).toLocaleDateString('en-GB') %></td>
+                            <td>₹<%= e.amount.toFixed(2) %></td>
+                          </tr>
+                        <% }) %>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h3>Savings Goals Progress</h3>
+                    <div id="topSavingsProgress" class="savings-progress">
+                    <% topSavings.forEach(s => { %>
+                    <div class="goal-item">
+                      <p><%= s.item %> - ₹<%= s.current.toFixed(2) %> / ₹<%= s.target.toFixed(2) %></p>
+                      <div class="progress-bar" data-percent="<%= s.percent %>">
+                          <span class="progress-label"><%= s.percent.toFixed(1) %>%</span>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>
+            </section>
+        </main>
+    </div>
+  </div>
+  <script>
+  const chartData = <%- JSON.stringify(chartData) %>;
+  const totalIncome = '<%= totalIncome %>';
+  const totalExpense = '<%= totalExpense %>';
+  const totalSavings = '<%= totalSavings %>';
+  </script>
+  <script>
+  document.getElementById('topExpenseRange')?.addEventListener('change', (e) => {
+    const months = e.target.value;
+    window.location.href = `/dashboard?range=${months}`;
+  });
+  </script>
+ <script src="/js/sidebar.js"></script>
+ <script defer src="/js/dashboard.js"></script>
+
+  
+</body>
+</html>

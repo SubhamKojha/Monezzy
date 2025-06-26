@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ITR Submission History</title>
+</head>
+<body>
+  <h1>ITR Form Submission History</h1>
+
+  <% if (responses.length === 0) { %>
+    <p>No responses found.</p>
+  <% } else { %>
+    <ul>
+      <% responses.forEach((entry, index) => { %>
+        <li>
+          <strong>#<%= index + 1 %> | ITR:</strong> <%= entry.recommendedForm %><br>
+          <strong>Submitted At:</strong> <%= entry.submittedAt.toLocaleString() %><br>
+          <strong>Answers:</strong>
+          <ol>
+            <% entry.answers.forEach(ans => { %>
+              <li><%= ans %></li>
+            <% }) %>
+          </ol>
+        </li>
+        <hr/>
+      <% }) %>
+    </ul>
+  <% } %>
+</body>
+</html>

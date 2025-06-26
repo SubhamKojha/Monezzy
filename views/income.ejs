@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Income Tracker</title>
+  <link rel="stylesheet" href="/css/income.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <h1>Income Tracker</h1>
+  <p>Total Income: ₹<%= totalIncome.toFixed(2) %></p>
+
+  <section class="income-summary">
+    <h2>Income Summary</h2>
+      <div class="summary-card">
+        <h3>Monthly Average Income</h3>
+        <p>₹<%= monthlyAverageIncome.toFixed(2) %></p>
+      </div>
+  </section>
+
+  <!-- Income Form -->
+  <form id="incomeForm">
+    <input type="text" id="title" placeholder="Income Title" required />
+    <input type="number" id="amount" placeholder="Amount" required />
+    <input type="date" id="date" required />
+
+    <select id="source" required>
+      <option value="">Select Source</option>
+      <option value="Salary">Salary</option>
+      <option value="Freelancing">Freelancing / Gig</option>
+      <option value="Passive">Passive Income</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <select id="recurrence" required onchange="handleRecurrenceChange()">
+      <option value="One-time">One-time</option>
+      <option value="Weekly">Weekly</option>
+      <option value="Monthly">Monthly</option>
+      <option value="Custom">Custom (every N days)</option>
+    </select>
+
+    <input type="number" id="customIntervalDays" placeholder="Every N days" style="display: none;" />
+    <input type="text" id="category" placeholder="Category (optional)" />
+    <button type="submit">Add Income</button>
+  </form>
+
+  <!-- Filter Form -->
+  <form method="GET" action="/income" class="filters">
+    <label>Month:
+      <select name="month">
+        <option value="">All Months</option>
+        <% for (let i = 0; i < 12; i++) { %>
+          <option value="<%= i %>" <%= selectedMonth == i ? 'selected' : '' %>>
+            <%= new Date(0, i).toLocaleString('default', { month: 'long' }) %>
+          </option>
+        <% } %>
+      </select>
+    </label>
+
+    <label>Year:
+      <select name="year">
+        <option value="">All Years</option>
+        <% years.forEach(y => { %>
+          <option value="<%= y %>" <%= selectedYear == y ? 'selected' : '' %>><%= y %></option>
+        <% }) %>
+      </select>
+    </label>
+
+    <button type="submit">Filter</button>
+  </form>
+
+  <!-- Optional Download -->
+  <div class="filters">
+    <label>Start Date: <input type="date" id="incomeStartDate"></label>
+    <label>End Date: <input type="date" id="incomeEndDate"></label>
+    <button id="downloadBtn">Download Excel</button>
+  </div>
+
+  <!-- Chart -->
+  <canvas id="incomeChart" width="400" height="200"></canvas>
+
+  <!-- Income List -->
+  <div class="income-list">
+    <% incomes.forEach(income => { %>
+      <div class="income-item">
+        <strong><%= income.title %></strong><br />
+        <span>₹<%= income.amount.toFixed(2) %></span><br />
+        <span><%= new Date(income.date).toLocaleDateString() %></span><br />
+        <span><%= income.source %> | <%= income.category || 'General' %></span><br />
+        <span>Recurs: <%= income.recurrence || 'One-time' %></span><br />
+
+        <form method="POST" action="/income/delete/<%= income._id %>" onsubmit="return confirm('Delete this income entry?');">
+          <button type="submit">Delete</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Inject chartData for external JS -->
+  <script>
+    const chartData = <%- JSON.stringify(chartData || []) %>;
+  </script>
+
+  <!-- External script with logic -->
+  <script src="/js/income.js"></script>
+</body>
+</html>

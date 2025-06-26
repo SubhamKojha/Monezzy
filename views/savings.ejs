@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Monezzy - Savings Tracker</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h1>Monezzy - Savings Goal Tracker</h1>
+
+  <h3>Sort by:</h3>
+  <form method="GET" action="/savings">
+    <select name="sort" onchange="this.form.submit()">
+      <option value="closest" <%= sort === 'closest' ? 'selected' : '' %>>Closest to Complete</option>
+      <option value="latest" <%= sort === 'latest' ? 'selected' : '' %>>Latest</option>
+      <option value="oldest" <%= sort === 'oldest' ? 'selected' : '' %>>Oldest</option>
+    </select>
+  </form>
+
+  <form action="/savings" method="POST">
+    <input type="text" name="name" placeholder="Goal Name" required>
+    <input type="number" name="target" placeholder="Target Amount" required>
+    <input type="date" name="deadline" placeholder="Deadline">
+    <button type="submit">Add Savings Goal</button>
+  </form>
+
+  <h2>Your Savings Goals</h2>
+  <% if (savings.length === 0) { %>
+    <p>No savings goals yet.</p>
+  <% } else { %>
+    <ul>
+      <% savings.forEach(goal => {
+        const saved = goal.saved || 0;
+        const remaining = Math.max(goal.target - saved, 0);
+        const percent = Math.min((saved / goal.target) * 100, 100).toFixed(1);
+      %>
+        <li style="margin-bottom: 20px;">
+          <strong><%= goal.name %></strong> - ₹<%= saved %> / ₹<%= goal.target %>
+          <% if (goal.deadline) { %> (by <%= new Date(goal.deadline).toDateString() %>) <% } %>
+
+          <div class="progress-container" style="background:#ccc; border-radius:6px; overflow:hidden; width:100%; margin-top:5px; margin-bottom:4px;">
+            <div style="width:<%= percent %>%; background:green; height:20px; text-align:center; color:white;">
+              <%= percent %>%
+            </div>
+          </div>
+
+          <!-- Add to savings form -->
+          <form action="/savings/<%= goal._id %>/add" method="POST" style="margin-top: 5px;">
+            <input
+              type="number"
+              name="amount"
+              min="1"
+              max="<%= remaining %>"
+              placeholder="Enter amount"
+              required
+            >
+            <button type="submit">➕ Add</button>
+          </form>
+
+          <!-- Delete goal form -->
+          <form action="/savings/<%= goal._id %>/delete" method="POST" onsubmit="return confirm('Delete this goal?')" style="display:inline;">
+            <button type="submit" style="color:red;">❌ Delete</button>
+          </form>
+
+          <hr>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</body>
+</html>
