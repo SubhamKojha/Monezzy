@@ -583,7 +583,7 @@
                 <table class="table">
                     <tr>
                         <td>D1 Tax payable on total income</td>
-                        <td><input type="number" name="taxPayable" class="amount-input" value="<%=result.oldTax || 6 %>"></td>
+                        <td><input type="number" name="taxPayable" class="amount-input" value="<%=result.oldTax || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D2 Rebate u/s 87A</td>
@@ -591,15 +591,15 @@
                     </tr>
                     <tr>
                         <td>D3 Tax after Rebate</td>
-                        <td><input type="number" name="taxAfterRebate" class="amount-input" value="<%= data.sec80TTA || 2200 %>"></td>
+                        <td><input type="number" name="taxAfterRebate" class="amount-input" value="<%= data.sec80TTA || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D4 Health and education Cess @ 4% on D3</td>
-                        <td><input type="number" name="healthEducationCess" class="amount-input" value="<%= data.sec80A || 1250 %>"></td>
+                        <td><input type="number" name="healthEducationCess" class="amount-input" value="<%= data.sec80A || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D5 Total Tax and Cess</td>
-                        <td><input type="number" name="totalTaxCess" class="amount-input" value="<%= data.totalTaxCess || 57200 %>"></td>
+                        <td><input type="number" name="totalTaxCess" class="amount-input" value="<%= data.totalTaxCess || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D6 Relief u/s 89</td>
@@ -607,15 +607,15 @@
                     </tr>
                     <tr>
                         <td>D7 Interest u/s 234A</td>
-                        <td><input type="number" name="interest234A" class="amount-input" value="<%= data.interest234A || 1000 %>"></td>
+                        <td><input type="number" name="interest234A" class="amount-input" value="<%= data.interest234A || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D8 Interest u/s 234B</td>
-                        <td><input type="number" name="interest234B" class="amount-input" value="<%= data.sec80TB || 1500 %>"></td>
+                        <td><input type="number" name="interest234B" class="amount-input" value="<%= data.sec80TB || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D9 Interest u/s 234C</td>
-                        <td><input type="number" name="interest234C" class="amount-input" value="<%= data.secA || 800 %>"></td>
+                        <td><input type="number" name="interest234C" class="amount-input" value="<%= data.secA || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D10 Fee u/s 234F</td>
@@ -623,15 +623,15 @@
                     </tr>
                     <tr>
                         <td><strong>D11 Total Tax, Fee and Interest (D5+D7+D8+D9+D10 – D6)</strong></td>
-                        <td><input type="number" name="totalTaxFeeInterest" class="amount-input" value="<%= data.sec80TTA || 58500 %>"></td>
+                        <td><input type="number" name="totalTaxFeeInterest" class="amount-input" value="<%= data.sec80TTA || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D12 Total Taxes Paid</td>
-                        <td><input type="number" name="totalTaxesPaid" class="amount-input" value="<%= data.totalTaxesPaid || 57200 %>"></td>
+                        <td><input type="number" name="totalTaxesPaid" class="amount-input" value="<%= data.totalTaxesPaid || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D13 Amount payable (D11-D12) (if D11>D12)</td>
-                        <td><input type="number" name="amountPayable" class="amount-input" value="<%= data.amountPayable || 1300 %>"></td>
+                        <td><input type="number" name="amountPayable" class="amount-input" value="<%= data.amountPayable || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D14 Refund (D12-D11) (if D12>D11)</td>
