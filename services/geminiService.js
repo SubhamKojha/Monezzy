@@ -11,44 +11,88 @@ ${text}
 
 Return the result as **valid minified JSON** like:
 {
-  "name": "John Doe",
-  "pan": "ABCDE1234F",
-  "dob": "1990-05-15",
-  "address": "123 Street, City, PIN",
-  "employerName": "ABC Pvt Ltd",
-  "employerPan": "AAAAA1111A",
-  "employerTan": "MUMA12345B",
-  "employerAddress": "456 Business Road, Mumbai",
-  "assessmentYear": "2024-25",
-  "employmentPeriod": "01-Apr-2023 to 31-Mar-2024",
-  "basicSalary": 600000,
-  "hraReceived": 200000,
-  "specialAllowance": 200000,
-  "grossSalary": 1000000,
-  "exemptHRA": 120000,
-  "exemptLTA": 30000,
+  "name": "Jane Smith",
+  "pan": "XYZAB9876Z",
+  "dob": "1985-08-22",
+  "adhar": "9999 8888 7777",
+  "mobile": "9876543210",
+  
+  "basicSalary": 550000,
+  "hraReceived": 180000,
+  "specialAllowance": 150000,
+  "grossSalary": 880000,
+  
+  "17(1)": 650000,
+  "17(2)": 120000,
+  "17(3)": 30000,
+  "89A": 15000,
+  
+  "D1": 40000,
+  "87A": 12500,
+  "D3": 27500,
+  "D4": 1100,
+  "D5": 28600,
+  "D6": 2000,
+  
+  "234A": 1200,
+  "234B": 800,
+  "234C": 500,
+  "234F": 1000,
+  
+  "TotalTax": 31300,
+  "TotalTaxesPaid": 35000,
+  "Amountpayable": 0,
+  "Refund": 3700,
+  
+  "exemptHRA": 100000,
+  "exemptLTA": 25000,
   "gratuity": 0,
-  "netSalary": 850000,
+  
+  "netSalary": 780000,
   "stdDeduction": 50000,
-  "sec80C": 150000,
-  "sec80D": 25000,
+  
+  "sec80C": 140000,
+  "sec80D": 30000,
   "sec80E": 0,
   "sec80G": 0,
   "sec80TTA": 0,
   "sec80CCD1B": 50000,
-  "totalDeductions": 225000,
-  "totalIncomeAfterDeductions": 625000,
-  "taxableIncome": 625000,
-  "taxPayable": 41600,
-  "rebate87A": 0,
-  "relief89": 0,
-  "totalTDS": 48000,
+  "totalDeductions": 220000,
+  
+  "totalIncomeAfterDeductions": 660000,
+  "taxableIncome": 660000,
+  "taxPayable": 40000,
+  "rebate87A": 12500,
+  "relief89": 2000,
+  
+  "totalTDS": 36000,
   "quarterlyTDS": [
-    {"quarter": "Q1", "amount": 12000, "bsr": "1234567", "challan": "00123"},
-    {"quarter": "Q2", "amount": 12000, "bsr": "1234567", "challan": "00124"},
-    {"quarter": "Q3", "amount": 12000, "bsr": "1234567", "challan": "00125"},
-    {"quarter": "Q4", "amount": 12000, "bsr": "1234567", "challan": "00126"}
+    {
+      "quarter": "Q1",
+      "amount": 9000,
+      "bsr": "1234567",
+      "challan": "11111"
+    },
+    {
+      "quarter": "Q2",
+      "amount": 9000,
+      "bsr": "1234568",
+      "challan": "22222"
+    },
+    {
+      "quarter": "Q3",
+      "amount": 9000,
+      "bsr": "1234569",
+      "challan": "33333"
+    },
+    {
+      "quarter": "Q4",
+      "amount": 9000,
+      "bsr": "1234570",
+      "challan": "44444"
+    }
   ],
+  
   "regime": "old"
 }
 
@@ -58,21 +102,33 @@ Fields to extract:
 - name
 - pan
 - dob
-- address
-
-### Employer Info
-- employerName
-- employerPan
-- employerTan
-- employerAddress
-- assessmentYear
-- employmentPeriod
+- adhar
+- mobile
 
 ### Salary Structure
 - basicSalary
 - hraReceived
 - specialAllowance
 - grossSalary
+- 17(1)
+- 17(2)
+- 17(3)
+- 89A
+- 89A
+- D1: Tax payable on total income
+- 87A
+- D3: Tax after Rebate
+- D4: Health and education Cess @ 4% on D3
+- D5: Total Tax and Cess
+- D6: Relief u/s 89
+- 234A
+- 234B
+- 234C
+- 234F
+- TotalTax
+- TotalTaxesPaid
+- Amountpayable
+- Refund
 
 ### Exemptions (u/s 10)
 - exemptHRA
@@ -113,6 +169,6 @@ Return ONLY the raw JSON with no markdown or extra output.
 
 exports.extractWithGemini = async (prompt) => {
   const result = await model.generateContent(prompt);
-  //console.log(result.response.candidates?.[0]?.content?.parts?.[0]?.text)
+  console.log(result.response.candidates?.[0]?.content?.parts?.[0]?.text)
   return result.response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
 };

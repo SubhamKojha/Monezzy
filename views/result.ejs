@@ -128,23 +128,15 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>(A1) PAN</label>
-                        <input type="text" class="input-box" name="pan1" maxlength="1">
-                        <input type="text" class="input-box" name="pan2" maxlength="1">
-                        <input type="text" class="input-box" name="pan3" maxlength="1">
-                        <input type="text" class="input-box" name="pan4" maxlength="1">
-                        <input type="text" class="input-box" name="pan5" maxlength="1">
-                        <input type="text" class="input-box" name="pan6" maxlength="1">
-                        <input type="text" class="input-box" name="pan7" maxlength="1">
-                        <input type="text" class="input-box" name="pan8" maxlength="1">
-                        <input type="text" class="input-box" name="pan9" maxlength="1">
-                        <input type="text" class="input-box" name="pan10" maxlength="1">
+                        <input type="text" class="wide-input" name="pan1" value="<%= data.pan %>">
+                        
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>(A2) First Name</label>
-                        <input type="text" name="firstName" class="wide-input">
+                        <input type="text" name="firstName" class="wide-input" value="<%=data.name %>">
                     </div>
                     <div class="form-group">
                         <label>(A2a) Middle Name</label>
@@ -162,28 +154,21 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>(A4) Date of Birth</label>
-                        <input type="text" class="input-box" name="dobD1" maxlength="1">
-                        <input type="text" class="input-box" name="dobD2" maxlength="1">
-                        <input type="text" class="input-box" name="dobM1" maxlength="1">
-                        <input type="text" class="input-box" name="dobM2" maxlength="1">
-                        <input type="text" class="input-box" name="dobY1" maxlength="1">
-                        <input type="text" class="input-box" name="dobY2" maxlength="1">
-                        <input type="text" class="input-box" name="dobY3" maxlength="1">
-                        <input type="text" class="input-box" name="dobY4" maxlength="1">
+                        <input type="text" class="wide-input" name="dobD1" value="<%=data.dob%>">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>(A5) Aadhaar Number (12 digits)/Aadhaar Enrolment Id (28 digits)</label>
-                        <input type="text" name="aadhaar" class="wide-input" maxlength="28">
+                        <input type="text" name="aadhaar" class="wide-input" maxlength="28" value="<%=data.adhar %>">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>(A6) Mobile No.</label>
-                        <input type="tel" name="mobile" class="medium-input">
+                        <input type="tel" name="mobile" class="medium-input" value="<%=data.mobile %>">
                     </div>
                     <div class="form-group">
                         <label>(A7) E-mail Address</label>
@@ -385,23 +370,23 @@
                   </tr>
                   <tr>
                     <td>a Salary as per section 17(1)</td>
-                    <td><input type="number" name="salary17_1" class="amount-input" value="<%= data.salary17_1 || 0 %>"></td>
+                    <td><input type="number" name="salary17_1" class="amount-input" value="<%= data.salary17_1 || 700000  %>"></td>
                   </tr>
                   <tr>
                     <td>b Value of perquisites as per section 17(2)</td>
-                    <td><input type="number" name="perquisites17_2" class="amount-input" value="<%= data.perquisites17_2 || 0 %>"></td>
+                    <td><input type="number" name="perquisites17_2" class="amount-input" value="<%= data.perquisites17_2 || 150000 %>"></td>
                   </tr>
                   <tr>
                     <td>c Profit in lieu of salary as per section 17(3)</td>
-                    <td><input type="number" name="profit17_3" class="amount-input" value="<%= data.profit17_3 || 0 %>"></td>
+                    <td><input type="number" name="profit17_3" class="amount-input" value="<%= data.profit17_3 || 20000 %>"></td>
                   </tr>
                   <tr>
                     <td>d Income from retirement benefit account maintained in a notified country u/s 89A</td>
-                    <td><input type="number" name="retirement89A_notified" class="amount-input" value="<%= data.retirement89A_notified || 0 %>"></td>
+                    <td><input type="number" name="retirement89A_notified" class="amount-input" value="<%= data.retirement89A_notified || 10000 %>"></td>
                   </tr>
                   <tr>
                     <td>e Income from retirement benefit account maintained in a country other than notified country u/s 89A</td>
-                    <td><input type="number" name="retirement89A_other" class="amount-input" value="<%= data.retirement89A_other || 0 %>"></td>
+                    <td><input type="number" name="retirement89A_other" class="amount-input" value="<%= data.retirement89A_other || 20000 %>"></td>
                   </tr>
                   <tr>
                     <td>ii Less allowances to the extent exempt u/s 10</td>
@@ -598,59 +583,59 @@
                 <table class="table">
                     <tr>
                         <td>D1 Tax payable on total income</td>
-                        <td><input type="number" name="taxPayable" class="amount-input"></td>
+                        <td><input type="number" name="taxPayable" class="amount-input" value="<%=result.oldTax || 6 %>"></td>
                     </tr>
                     <tr>
                         <td>D2 Rebate u/s 87A</td>
-                        <td><input type="number" name="rebate87A" class="amount-input"></td>
+                        <td><input type="number" name="rebate87A" class="amount-input" value="<%= data.rebate87A || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D3 Tax after Rebate</td>
-                        <td><input type="number" name="taxAfterRebate" class="amount-input"></td>
+                        <td><input type="number" name="taxAfterRebate" class="amount-input" value="<%= data.sec80TTA || 2200 %>"></td>
                     </tr>
                     <tr>
                         <td>D4 Health and education Cess @ 4% on D3</td>
-                        <td><input type="number" name="healthEducationCess" class="amount-input"></td>
+                        <td><input type="number" name="healthEducationCess" class="amount-input" value="<%= data.sec80A || 1250 %>"></td>
                     </tr>
                     <tr>
                         <td>D5 Total Tax and Cess</td>
-                        <td><input type="number" name="totalTaxCess" class="amount-input"></td>
+                        <td><input type="number" name="totalTaxCess" class="amount-input" value="<%= data.totalTaxCess || 57200 %>"></td>
                     </tr>
                     <tr>
                         <td>D6 Relief u/s 89</td>
-                        <td><input type="number" name="relief89" class="amount-input"></td>
+                        <td><input type="number" name="relief89" class="amount-input" value="<%= data.relief89 || 0 %>"></td>
                     </tr>
                     <tr>
                         <td>D7 Interest u/s 234A</td>
-                        <td><input type="number" name="interest234A" class="amount-input"></td>
+                        <td><input type="number" name="interest234A" class="amount-input" value="<%= data.interest234A || 1000 %>"></td>
                     </tr>
                     <tr>
                         <td>D8 Interest u/s 234B</td>
-                        <td><input type="number" name="interest234B" class="amount-input"></td>
+                        <td><input type="number" name="interest234B" class="amount-input" value="<%= data.sec80TB || 1500 %>"></td>
                     </tr>
                     <tr>
                         <td>D9 Interest u/s 234C</td>
-                        <td><input type="number" name="interest234C" class="amount-input"></td>
+                        <td><input type="number" name="interest234C" class="amount-input" value="<%= data.secA || 800 %>"></td>
                     </tr>
                     <tr>
                         <td>D10 Fee u/s 234F</td>
-                        <td><input type="number" name="fee234F" class="amount-input"></td>
+                        <td><input type="number" name="fee234F" class="amount-input" value="<%= data.sec80TTA || 0 %>"></td>
                     </tr>
                     <tr>
                         <td><strong>D11 Total Tax, Fee and Interest (D5+D7+D8+D9+D10 – D6)</strong></td>
-                        <td><input type="number" name="totalTaxFeeInterest" class="amount-input"></td>
+                        <td><input type="number" name="totalTaxFeeInterest" class="amount-input" value="<%= data.sec80TTA || 58500 %>"></td>
                     </tr>
                     <tr>
                         <td>D12 Total Taxes Paid</td>
-                        <td><input type="number" name="totalTaxesPaid" class="amount-input"></td>
+                        <td><input type="number" name="totalTaxesPaid" class="amount-input" value="<%= data.totalTaxesPaid || 57200 %>"></td>
                     </tr>
                     <tr>
                         <td>D13 Amount payable (D11-D12) (if D11>D12)</td>
-                        <td><input type="number" name="amountPayable" class="amount-input"></td>
+                        <td><input type="number" name="amountPayable" class="amount-input" value="<%= data.amountPayable || 1300 %>"></td>
                     </tr>
                     <tr>
                         <td>D14 Refund (D12-D11) (if D12>D11)</td>
-                        <td><input type="number" name="refund" class="amount-input"></td>
+                        <td><input type="number" name="refund" class="amount-input" value="<%= data.Refund || 0 %>"></td>
                     </tr>
                 </table>
             </div>

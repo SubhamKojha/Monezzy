@@ -4,30 +4,154 @@
   <meta charset="UTF-8">
   <title>Loan Comparison</title>
 </head>
+<style>
+  .modern-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: "Segoe UI", sans-serif;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.modern-table thead {
+  background-color: #2c3e50;
+  color: #fff;
+}
+
+.modern-table th,
+.modern-table td {
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.modern-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.modern-table tbody tr:hover {
+  background-color: #e6f7ff;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.chatbot-container {
+  max-width: 600px;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.chat-window {
+  height: 300px;
+  overflow-y: auto;
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.chat-input button {
+  padding: 8px 12px;
+  background: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+</style>
 <body>
   <h1>Loan Comparison Summary</h1>
-  <table border="1">
-    <tr>
-      <th>Bank</th>
-      <th>Type</th>
-      <th>Amount</th>
-      <th>Tenure</th>
-      <th>EMI</th>
-      <th>Total Repayment</th>
-    </tr>
-    <% banks.forEach(bank => { %>
-      <tr>
-        <td><%= bank.name %></td>
-        <td><%= bank.type %></td>
-        <td><%= bank.amount %></td>
-        <td><%= bank.tenure %></td>
-        <td><%= bank.emi.toFixed(2) %></td>
-        <td><%= bank.total.toFixed(2) %></td>
-      </tr>
-    <% }) %>
-  </table>
+  <div class="table-container">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Bank</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Tenure</th>
+          <th>EMI</th>
+          <th>Total Repayment</th>
+          <th>Interest Rate</th>
+          <th>Processing Fee</th>
+          <th>Prepayment Charges</th>
+          <th>Pros</th>
+          <th>Cons</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% banks.forEach(bank => { %>
+          <tr>
+            <td><%= bank.name %></td>
+            <td><%= bank.type %></td>
+            <td>₹<%= bank.amount %></td>
+            <td><%= bank.tenure %> months</td>
+            <td>₹<%= bank.emi.toFixed(2) %></td>
+            <td>₹<%= bank.total.toFixed(2) %></td>
+            <td><%= bank.interestRate %>%</td>
+            <td>₹<%= bank.processingFee %></td>
+            <td><%= bank.prepaymentCharges %></td>
+            <td><%= bank.pros %></td>
+            <td><%= bank.cons %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
 
-  <h2>AI-Generated Analysis</h2>
-  <pre><%= analysis %></pre>
+  <div class="chatbot-container">
+  <h2>💬 Loan & Finance Chatbot</h2>
+  <div id="chat-window" class="chat-window"></div>
+  <div class="chat-input">
+    <input type="text" id="user-input" placeholder="Ask me about loans or finance..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+async function sendMessage() {
+  const input = document.getElementById("user-input");
+  const message = input.value.trim();
+  if (!message) return;
+
+  // show user message
+  const chatWindow = document.getElementById("chat-window");
+  chatWindow.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
+  input.value = "";
+
+  // send to backend
+  try {
+    const res = await fetch("/api/chatbot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: message })
+    });
+    const data = await res.json();
+    chatWindow.innerHTML += `<div><strong>Bot:</strong> ${data.answer}</div>`;
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  } catch (err) {
+    console.error(err);
+    chatWindow.innerHTML += `<div style="color:red;"><strong>Bot:</strong> Error connecting to server.</div>`;
+  }
+}
+</script>
 </body>
 </html>

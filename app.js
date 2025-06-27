@@ -44,6 +44,7 @@ const alertRoutes = require('./routes/alertRoutes');
 const download = require('./routes/download');
 const incomeDownload = require('./routes/incomeDownload');
 const profileRoutes = require('./routes/profileRoutes');
+const chatbotRoute = require("./routes/chatbot");
 
 // Register all routes
 app.use('/', questionRoutes);
@@ -60,6 +61,7 @@ app.use('/api/alerts', alertRoutes);
 app.use('/api/expenses', download);
 app.use('/api/incomes', incomeDownload);
 app.use('/profile', profileRoutes);
+app.use("/api/chatbot", chatbotRoute);
 
 // Extra view render
 app.get('/compare', (req, res) => {
